@@ -1,0 +1,9 @@
+.login {
+    border: solid thin orange;
+    width: 300px;
+    margin: auto;
+    height: 200px;
+    color: orange;
+    text-align: center;
+    background: black;
+}

@@ -1,0 +1,22 @@
+.prestige{
+    display: flex;
+    flex-direction: row;
+}
+.prestige-progress{
+    margin: auto 0 auto 1px;
+    width: 300px;
+}
+
+.rank{
+    flex-basis: 45%;
+}
+
+.level,.reminder{
+    font-size: 13px;
+    margin-top: 1px;
+}
+
+.reminder{
+    float: right;
+
+}

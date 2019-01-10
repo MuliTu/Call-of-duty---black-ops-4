@@ -1,0 +1,7 @@
+.life-time-statistics{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 400px;
+    justify-content: space-around;
+}

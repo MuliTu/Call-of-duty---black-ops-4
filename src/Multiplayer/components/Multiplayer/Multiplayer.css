@@ -1,0 +1,12 @@
+.multiplayer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.boxes-list-wrapper {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}

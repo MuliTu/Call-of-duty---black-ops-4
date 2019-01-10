@@ -1,0 +1,8 @@
+.button{
+    height: 30px;
+    width: 85px;
+    font-size: 16px;
+    background-color: orange;
+    border: solid thin #694400;
+    box-shadow: 0 0 10px 1px #ca951d;
+}

@@ -1,0 +1,18 @@
+.input{
+    border-radius: 20px;
+    height: 30px;
+    margin: 10px;
+    font-size: 21px;
+    text-align: center;
+}
+
+.select{
+    width: 191px;
+    font-size: 15px;
+    height: 29px;
+    margin-bottom: 5px;
+}
+
+.input-wrapper{
+    margin: 20px;
+}
