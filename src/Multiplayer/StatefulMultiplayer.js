@@ -3,7 +3,6 @@ import {UserData} from "../service/Http";
 import {Multiplayer} from "./components/Multiplayer/Multiplayer";
 import LifeTime from "../LifeTime/LifeTime";
 import './StatefulMultiplayer.css'
-import {Figure} from "./components/Figure/Figure";
 import Select from 'react-select';
 
 class StatefulMultiplayer extends React.Component {
@@ -27,12 +26,15 @@ class StatefulMultiplayer extends React.Component {
             },
             modes: [],
             modeStatistics: [],
+            width: (window.innerWidth >= 1000 ? 500 : 350)
         }
     }
 
+    resizeHandler = () => this.setState({width: (window.innerWidth >= 1000 ? 500 : 350)});
+
+
     async componentDidMount() {
         const {data} = await UserData(this.state.username, this.state.platform);
-        console.log('this is data', data);
         this.setState({
             lifeTime: {
                 prestige: data.mp.prestige,
@@ -46,52 +48,47 @@ class StatefulMultiplayer extends React.Component {
                 suicides: data.mp.lifetime.all.suicides
             },
             modes: Object.keys(data.mp.lifetime.mode).map((md, index) => ({label: md, value: index}))
-        })
+        });
+        window.addEventListener('resize', this.resizeHandler)
+
     }
 
+
     changeModeHandler = async (opt) => {
-        console.log(opt);
-       if(opt.label !== ''){
-        const {data} = await UserData(this.state.username, this.state.platform);
-        this.setState({
-            modeStatistics: await data.mp.lifetime.mode[opt.label]
-        })}
+        if (opt.label !== '') {
+            const {data} = await UserData(this.state.username, this.state.platform);
+            this.setState({
+                modeStatistics: await data.mp.lifetime.mode[opt.label]
+            })
+        }
     };
 
     render() {
-        // console.log(this.state);
         const {
             prestige, level, levelXpGained,
             levelXpRemainder, timePlayedTotal, accuracy, hits,
             headshots, suicides
         } = this.state.lifeTime;
-        const {username,modes,modeStatistics} = this.state;
+        const { modes, modeStatistics} = this.state;
         return (
             <div>
-                <h2>{username}</h2>
-                <div className='test'>
-                    <div style={{flexBasis: '45%'}}>
-                        <LifeTime level={level} levelXpGained={levelXpGained}
-                                  levelXpRemainder={levelXpRemainder}
-                                  prestige={prestige}
-                                  timePlayedTotal={timePlayedTotal}
-                                  accuracy={accuracy}
-                                  headshots={headshots}
-                                  hits={hits}
-                                  suicides={suicides}/>
-                    </div>
-                    <div style={{flexBasis: '10%'}}>
-                        <Figure/>
-                    </div>
-                    <div style={{flexBasis: '45%'}}>
-                        Mode:<Select options={modes}
-                                     placeholder={'Select mode'}
-                                     onChange={this.changeModeHandler}/>
-                        <Multiplayer data={modeStatistics}/>
-                    </div>
+                    <div className='test'>
+                        <div style={{width: this.state.width, margin: 'auto'}}><LifeTime level={level}
+                                                                                         levelXpGained={levelXpGained}
+                                                                                         levelXpRemainder={levelXpRemainder}
+                                                                                         prestige={prestige}
+                                                                                         timePlayedTotal={timePlayedTotal}
+                                                                                         accuracy={accuracy}
+                                                                                         headshots={headshots}
+                                                                                         hits={hits}
+                                                                                         suicides={suicides}/></div>
+                        <div style={{flexBasis: '10%'}}/>
+                        <div style={{width: this.state.width, margin: 'auto'}}>
+                            Mode:<Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler}/>
+                            <Multiplayer data={modeStatistics}/>
+                        </div>
 
-                </div>
-
+                    </div>
             </div>
         );
     }

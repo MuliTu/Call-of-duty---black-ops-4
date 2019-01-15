@@ -1,47 +1,34 @@
 import React from 'react'
 import './Multiplayer.css'
-import InfoBox from "../../../InfoBox/InfoBox";
-import {Accuracy, Time, Image} from "../../../InfoBox/functions/InfoBoxFunctions";
+import {Time, Image, Ratio, boxInfoEntity} from "../../../InfoBox/functions/InfoBoxFunctions";
+
+
 
 export const Multiplayer = ({data}) => {
-    console.log('this is props',data);
-    const boxesList = [
-        {title: 'kills', icon: Image('/images/dead.png'), data: data.deaths},
-        {title: 'assists', icon: Image('/images/assist.png'), data: data.assists},
-        {title: 'wins', icon: Image('/images/win.png'), data: data.wins},
-        {title: 'kill streak', icon: Image('/images/streak.png'), data: data.killStreak},
-        {title: 'deaths', icon: Image('/images/death.png'), data: data.deaths},
-        {title: 'losses', icon: Image('/images/lose.png'), data: data.losses},
-        {title: 'time', icon: Image('/images/time.png'), data: Time(data.timePlayedTotal)},
-
-    ];
-    /*
-defends: 0
-kdratio: 635
-objectiveScore: 0
-offends: 0
-score: 577335
-ties: 0
-totalDamage: 751545
-winStreak: 16777215
-wlratio: 639
-     */
-
-    const boxInfoEntity = (box, index) => (
-        <InfoBox key={index} title={box.title} icon={box.icon}>{box.data}</InfoBox>
-    );
-
+    const boxesList = data !== undefined ? [
+            {title: 'kills', icon: Image('/dead.png'), data: data.deaths},
+            {title: 'assists', icon: Image('/assist.png'), data: data.assists},
+            {title: 'wins', icon: Image('/win.png'), data: data.wins},
+            {title: 'kill streak', icon: Image('/streak.png'), data: data.killStreak},
+            {title: 'deaths', icon: Image('/death.png'), data: data.deaths},
+            {title: 'losses', icon: Image('/lose.png'), data: data.losses},
+            {title: 'time', icon: Image('/time.png'), data: Time(data.timePlayedTotal),style:{width:'125px'}},
+            {title: 'K/D ratio', data: Ratio(data.kills,data.deaths),style:{width: '150px'}},
+            {title: 'W/L ratio', data: Ratio(data.wins,data.losses),style:{width: '150px'}},
+        ] :
+        [];
     return (
         <div className='multiplayer'>
             {
-
+                data !== undefined ?
                     <div className='boxes-list-wrapper'>
                         {
                             boxesList.map(boxInfoEntity)
                         }
                     </div>
+                    :
+                    <div>Please select mode</div>
             }
-
         </div>
     )
 };

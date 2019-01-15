@@ -1,5 +1,16 @@
 .test{
 border: solid thin orange;
     display: flex;
+    flex-direction: row;
     margin: auto;
+    background : url("/images/figure.png") no-repeat  center  ;
+    background-size: contain;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
 }
+
+.forx{
+    width:530px
+}
+
