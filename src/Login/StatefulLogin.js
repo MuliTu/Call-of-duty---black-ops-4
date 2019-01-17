@@ -2,13 +2,9 @@ import React from 'react';
 import {UserData, UserDataBar} from "../service/Http";
 import './StatefulLogin.css'
 import Link from "react-router-dom/es/Link";
-import {generatePath} from "react-router";
-import {Redirect} from 'react-router';
-import {Input} from "./components/Input/Input";
-import {Button} from "./components/Button/Button";
-import {prestigeLevelMatch} from "../LifeTime/components/Rank/functions/RankFunctions";
 import UserBar from "./components/UserBar/UserBar";
-import {getTokenAsUsers, saveToken} from "./functions/StatefullLoginFunctions";
+import {getTokenAsUsers} from "./functions/StatefullLoginFunctions";
+import Login from "./components/Login/Login";
 
 
 class StatefulLogin extends React.Component {
@@ -51,9 +47,7 @@ class StatefulLogin extends React.Component {
         await this.updateUser(this.state.query, this.state.platform)
     });
 
-
-    recentlyVisitedEntity = (user, index) => (
-        <div className='recently-visited'>
+    recentlyVisitedEntity = (user, index) => (<div className='recently-visited' key={index}>
             <Link to={`/user/${user.username}/platform/${user.platform}/multiplayer`} key={index}>
                 <UserBar user={user}/>
             </Link>
@@ -61,26 +55,14 @@ class StatefulLogin extends React.Component {
     );
 
     render() {
-        const {valid, query,platform} = this.state;
-        const path = `/user/${this.state.query}/platform/${this.state.platform}/multiplayer`;
+        const {valid, query, platform} = this.state;
         return (
             <div>
-                {
-                    <div className='login'>
-                        <Input onInputChange={this.inputChangeHandler}
-                               onPlatformChange={this.platformChangeHandler}/>
-                        {
-                            valid != null ?
-                                valid ?
-                                    <div>Found <Link onClick={()=>saveToken(query,platform)} to={path}><Button/></Link>
-                                    </div>
-                                    :
-                                    <div>There is no user with the name {query}</div>
-                                :
-                                <div/>
-                        }
-                    </div>
-                }
+                <Login onChangeInput={(e) => this.inputChangeHandler(e)}
+                       onChangePlatform={() => this.platformChangeHandler()}
+                       isValid={valid}
+                       query={query}
+                       platform={platform}/>
                 <div>
                     {
                         this.state.usersList.map(this.recentlyVisitedEntity)

@@ -1,4 +1,3 @@
-import {generatePath} from "react-router";
 
 export const saveToken = (query, platform) => {
     const currentUsers = localStorage.getItem('token');
