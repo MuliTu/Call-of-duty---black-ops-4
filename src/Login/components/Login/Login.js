@@ -14,7 +14,7 @@ const Login = ({onChangeInput, onChangePlatform, isValid, query, platform}) => {
             {
                 isValid != null ?
                     isValid ?
-                        <div>Found <Link onClick={() => saveToken(query, platform)} to={path}><Button/></Link>
+                        <div>Found {query}<Link onClick={() => saveToken(query, platform)} to={path}><Button/></Link>
                         </div>
                         :
                         <div>There is no user with the name {query}</div>

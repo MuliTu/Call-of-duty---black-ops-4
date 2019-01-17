@@ -3,7 +3,7 @@ import './GlitchEffect.css'
 
 const GlitchEffect = (props) => {
     return (
-        <div style={{fontSize:props.size}} className='glitch' data-text={props.children}>
+        <div className='glitch' data-text={props.children}>
             {props.children}
         </div>
     );
