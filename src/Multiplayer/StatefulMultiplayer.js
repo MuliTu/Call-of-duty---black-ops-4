@@ -4,6 +4,7 @@ import {Multiplayer} from "./components/Multiplayer/Multiplayer";
 import LifeTime from "../LifeTime/LifeTime";
 import './StatefulMultiplayer.css'
 import Select from 'react-select';
+import GlitchEffect from "../GlitchEffect/GlitchEffect";
 
 class StatefulMultiplayer extends React.Component {
     constructor(props) {
@@ -50,7 +51,6 @@ class StatefulMultiplayer extends React.Component {
             modes: Object.keys(data.mp.lifetime.mode).map((md, index) => ({label: md, value: index}))
         });
         window.addEventListener('resize', this.resizeHandler)
-
     }
 
 
@@ -72,7 +72,8 @@ class StatefulMultiplayer extends React.Component {
         const { modes, modeStatistics} = this.state;
         return (
             <div>
-                    <div className='test'>
+                <GlitchEffect>{this.state.username}</GlitchEffect>
+                <div className='test'>
                         <div style={{width: this.state.width, margin: 'auto'}}><LifeTime level={level}
                                                                                          levelXpGained={levelXpGained}
                                                                                          levelXpRemainder={levelXpRemainder}
@@ -87,7 +88,6 @@ class StatefulMultiplayer extends React.Component {
                             Mode:<Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler}/>
                             <Multiplayer data={modeStatistics}/>
                         </div>
-
                     </div>
             </div>
         );

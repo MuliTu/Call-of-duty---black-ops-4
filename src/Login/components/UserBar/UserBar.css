@@ -1,0 +1,14 @@
+.bar{
+    display: flex;
+    max-width: 300px;
+    border: solid thin orange;
+    margin: 10px;
+}
+
+.username,.blevel,.platform{
+    margin: auto 2px auto auto;
+}
+
+.blevel{
+    font-size: 14px;
+}

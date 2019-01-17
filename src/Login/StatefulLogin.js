@@ -1,11 +1,14 @@
 import React from 'react';
-import {UserData} from "../service/Http";
+import {UserData, UserDataBar} from "../service/Http";
 import './StatefulLogin.css'
 import Link from "react-router-dom/es/Link";
 import {generatePath} from "react-router";
 import {Redirect} from 'react-router';
 import {Input} from "./components/Input/Input";
 import {Button} from "./components/Button/Button";
+import {prestigeLevelMatch} from "../LifeTime/components/Rank/functions/RankFunctions";
+import UserBar from "./components/UserBar/UserBar";
+import {getTokenAsUsers, saveToken} from "./functions/StatefullLoginFunctions";
 
 
 class StatefulLogin extends React.Component {
@@ -16,34 +19,29 @@ class StatefulLogin extends React.Component {
             query: '',
             platform: 'xbl',
             valid: null,
-            redirect: '',
-            isToken: false
-
+            isToken: false,
+            usersList: []
         }
     }
 
     async componentDidMount() {
         if (localStorage.getItem('token') !== null) {
-            // const [username, platform] = [...localStorage.getItem('token')];
-            const test = localStorage.getItem('token');
-            // await this.updateUser(username, platform);
-            // this.setState({
-            //     isToken: true,
-            //     redirect: generatePath('user/:id/platform/:platform/multiplayer', {
-            //         id: this.state.query,
-            //         platform: this.state.platform
-            //     })
-            // });
+            const allUsers = getTokenAsUsers();
+            allUsers.map(async user => {
+                const userList = await UserDataBar(user.username, user.platform);
+                this.setState({
+                    usersList: [...this.state.usersList, userList]
+                })
+            })
         }
-
-
     }
 
     updateUser = async (name, platform) => this.setState({
-        user: await UserData(name, platform),
-        query: name,
-        platform: platform
-    }, () => this.setState({valid: this.state.user.status === 'success'}, () => this.props.onLogin(this.state.query)));
+            user: await UserData(name, platform),
+            query: name,
+            platform: platform
+        },
+        () => this.setState({valid: this.state.user.status === 'success'}));
 
     platformChangeHandler = (e) => this.setState({platform: e}, async () => {
         await this.updateUser(this.state.query, this.state.platform)
@@ -53,23 +51,28 @@ class StatefulLogin extends React.Component {
         await this.updateUser(this.state.query, this.state.platform)
     });
 
-    saveToken = () => {
-        localStorage.setItem('token',`${this.state.query},${this.state.platform}|`)
-    };
+
+    recentlyVisitedEntity = (user, index) => (
+        <div className='recently-visited'>
+            <Link to={`/user/${user.username}/platform/${user.platform}/multiplayer`} key={index}>
+                <UserBar user={user}/>
+            </Link>
+        </div>
+    );
 
     render() {
-        const {valid, query} = this.state;
+        const {valid, query,platform} = this.state;
         const path = `/user/${this.state.query}/platform/${this.state.platform}/multiplayer`;
         return (
-            <div className='login'>
+            <div>
                 {
-                    <div>
+                    <div className='login'>
                         <Input onInputChange={this.inputChangeHandler}
                                onPlatformChange={this.platformChangeHandler}/>
                         {
                             valid != null ?
                                 valid ?
-                                    <div>Found <Link onClick={this.saveToken} to={path}><Button/></Link>
+                                    <div>Found <Link onClick={()=>saveToken(query,platform)} to={path}><Button/></Link>
                                     </div>
                                     :
                                     <div>There is no user with the name {query}</div>
@@ -78,8 +81,11 @@ class StatefulLogin extends React.Component {
                         }
                     </div>
                 }
-
-
+                <div>
+                    {
+                        this.state.usersList.map(this.recentlyVisitedEntity)
+                    }
+                </div>
             </div>
         );
     }

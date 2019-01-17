@@ -1,13 +1,23 @@
 import {generatePath} from "react-router";
 
-export async function asyncgetUserByToken(){
-    const [username, platform] = [...localStorage.getItem('token').split(',')];
-    await this.updateUser(username, platform);
-    this.setState({
-        isToken: true,
-        redirect: generatePath('user/:id/platform/:platform/multiplayer', {
-            id: this.state.query,
-            platform: this.state.platform
-        })
-    });
-}
+export const saveToken = (query, platform) => {
+    const currentUsers = localStorage.getItem('token');
+    if (currentUsers === null){
+        localStorage.setItem('token', `${query.toLowerCase()},${platform.toLowerCase()}|`);
+    }
+    else {
+        const tempUserList = getTokenAsUsers();
+        const isExist = tempUserList.some(x => x.username.toLowerCase() === query.toLowerCase());
+        if (!isExist) {
+            localStorage.setItem('token', `${query.toLowerCase()},${platform.toLowerCase()}|${currentUsers}`)
+        }
+    }
+};
+
+export const getTokenAsUsers = () => {
+    const usersList = localStorage.getItem('token').split('|');
+    return usersList.map(user => ({
+        username: user.split(',')[0],
+        platform: user.split(',')[1]
+    })).slice(0, usersList.length - 1);
+};

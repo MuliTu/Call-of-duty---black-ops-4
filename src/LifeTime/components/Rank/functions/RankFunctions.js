@@ -1,0 +1,1 @@
+export const prestigeLevelMatch =(prestigeLevel) =>  prestigeLevel>= 10 ? prestigeLevel : `0${prestigeLevel}`;
