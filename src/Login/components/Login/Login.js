@@ -5,7 +5,7 @@ import {saveToken} from "../../functions/StatefullLoginFunctions";
 import {Button} from "../Button/Button";
 
 const Login = ({onChangeInput, onChangePlatform, isValid, query, platform}) => {
-    const path = `/user/${query}/platform/${platform}/multiplayer`;
+    const path = `/user/${query}/platform/${platform}/mode/multiplayer`;
 
     return (
         <div className='login'>

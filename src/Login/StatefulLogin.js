@@ -48,7 +48,7 @@ class StatefulLogin extends React.Component {
     });
 
     recentlyVisitedEntity = (user, index) => (<div className='recently-visited' key={index}>
-            <Link to={`/user/${user.username}/platform/${user.platform}/multiplayer`} key={index}>
+            <Link to={`/user/${user.username}/platform/${user.platform}/mode/multiplayer`} key={index}>
                 <UserBar user={user}/>
             </Link>
         </div>

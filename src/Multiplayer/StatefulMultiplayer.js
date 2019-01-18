@@ -48,7 +48,7 @@ class StatefulMultiplayer extends React.Component {
                 headshots: data.mp.lifetime.all.headshots,
                 suicides: data.mp.lifetime.all.suicides
             },
-            modes: Object.keys(data.mp.lifetime.mode).map((md, index) => ({label: md, value: index}))
+            modes: Object.keys(data.mp.lifetime.mode).map((mode, index) => ({label: mode, value: index}))
         });
         window.addEventListener('resize', this.resizeHandler)
     }
@@ -72,7 +72,6 @@ class StatefulMultiplayer extends React.Component {
         const { modes, modeStatistics} = this.state;
         return (
             <div>
-                <GlitchEffect>{this.state.username}</GlitchEffect>
                 <div className='test'>
                         <div style={{width: this.state.width, margin: 'auto'}}><LifeTime level={level}
                                                                                          levelXpGained={levelXpGained}
