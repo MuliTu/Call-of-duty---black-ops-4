@@ -3,7 +3,7 @@ import {Rank} from "./components/Rank/Rank";
 import {Accuracy, boxInfoEntity, Image, Time} from "../InfoBox/functions/InfoBoxFunctions";
 import './LifeTime.css'
 
-const LifeTime = ({timePlayedTotal, prestige, level, levelXpRemainder, levelXpGained, accuracy, headshots, hits, suicides}) => {
+const LifeTime = ({timePlayedTotal, prestige, level, levelXpRemainder, levelXpGained, accuracy, headshots, hits, suicides, blackout = false}) => {
     const smallBoxStyle = {
         highet: '120px',
         width: '80px',
@@ -26,10 +26,11 @@ const LifeTime = ({timePlayedTotal, prestige, level, levelXpRemainder, levelXpGa
 
     return (
         <div className='life-time-component'>
-            <Rank prestigeLevel={prestige} level={level}
+            <Rank prestigeLevel={prestige}
+                  level={level}
                   reminder={levelXpRemainder}
-                  gained={levelXpGained}/>
-
+                  gained={levelXpGained}
+                  blackout={blackout}/>
             <div className='life-time-statistics'>
                 {boxesList.map(boxInfoEntity)}
             </div>

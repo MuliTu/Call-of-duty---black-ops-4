@@ -16,6 +16,10 @@ export async function UserDataBar(name, platform) {
         prestige: data.mp.prestige
     });
     return await userResult
+}
 
+export async function UserDataBlackout(name, platform) {
+    const result = await fetch(`${URL}${platform}/gamer/${name}/profile/type/wz`);
+    return await result.json()
 
 }

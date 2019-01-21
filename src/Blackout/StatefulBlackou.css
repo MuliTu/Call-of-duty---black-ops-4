@@ -1,0 +1,8 @@
+.travel-list{
+    display: flex;
+    border: solid thin orange;
+    border-radius: 32px;
+    width: 400px;
+    line-height: 52px;
+    height: 52px;
+}

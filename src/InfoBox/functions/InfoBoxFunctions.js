@@ -13,11 +13,11 @@ export const Accuracy = (data) => {
     return (`${data > 0 && data !== null ? (data * 100).toString().slice(0, 5) : 0}%`)
 };
 
-export const Image = (path) => {
+export const Image = (path,size=110) => {
     const style = {
         backgroundImage: `url(/images/${path})`,
         backgroundSize: 'contain',
-        height: '110px',
+        height: `${size}px`,
         backgroundPosition: 'center',
         fill: 'orange',
         backgroundRepeat: 'no-repeat'

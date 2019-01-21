@@ -3,23 +3,32 @@ import './Rank.css'
 import Progress from 'react-progressbar';
 import {prestigeLevelMatch} from "./functions/RankFunctions";
 import PrestigeImage from "../../../StatelessComponents/PrestigeImage/PrestigeImage";
+import {BlackoutLevelImage} from "../../../Blackout/BlackoutFunctions/BlackoutFunctions";
 
-export const Rank = ({prestigeLevel, level ,reminder,gained}) => {
-
+export const Rank = ({prestigeLevel, level, reminder, gained, blackout = false}) => {
+    console.log('this is prestige leve', prestigeLevel, level, reminder, gained);
 
     return (
         <div className='rank'>
             <div>Rank</div>
             <div className='prestige'>
-                    <PrestigeImage size={85} prestige={prestigeLevel}/>
+                {
+                    blackout ? <BlackoutLevelImage level={level}/> :
+                        <PrestigeImage size={85} prestige={prestigeLevel}/>
+                }
+
                 <div className='prestige-progress'>
-                    Prestige {prestigeLevelMatch(prestigeLevel)}
-                    <div className='level'>Level {level}</div>
-                    <div style={{backgroundColor:'white'}}>
-                        <Progress completed={Math.round((gained/(reminder + gained))*100)}/>
+                    {
+                        blackout ?
+                            <div/> :
+                            <div>Prestige {prestigeLevelMatch(prestigeLevel)}</div>
+                    }
+                    <div className='level'>Level {level >= 81? `${level} (MAX)`:level}</div>
+                    <div style={{backgroundColor: 'white'}}>
+                        <Progress completed={blackout && level <81 ? Math.round((gained / (reminder + gained)) * 100):100}/>
                     </div>
-                    <div className='level'>{gained}/({reminder + gained})
-                        <div className='reminder'>{reminder}xp to next level</div></div>
+                    <div className='level' hidden={blackout && level >= 81}>{gained}/({reminder + gained})
+                        <div className='reminder'>{reminder} xp to next level</div></div>
 
 
                 </div>

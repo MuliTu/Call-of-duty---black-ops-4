@@ -3,9 +3,7 @@ import './Navigation.css'
 import {Link} from "react-router-dom";
 class Navigation extends React.Component {
     constructor(props) {
-        console.log('this is props',props);
         super(props);
-
     }
 
 

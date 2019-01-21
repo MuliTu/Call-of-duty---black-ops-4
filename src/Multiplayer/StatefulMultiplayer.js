@@ -84,7 +84,9 @@ class StatefulMultiplayer extends React.Component {
                                                                                          suicides={suicides}/></div>
                         <div style={{flexBasis: '10%'}}/>
                         <div style={{width: this.state.width, margin: 'auto'}}>
-                            Mode:<Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler}/>
+                            Mode:<Select options={modes}
+                                         placeholder={'Select mode'}
+                                         onChange={this.changeModeHandler}/>
                             <Multiplayer data={modeStatistics}/>
                         </div>
                     </div>
