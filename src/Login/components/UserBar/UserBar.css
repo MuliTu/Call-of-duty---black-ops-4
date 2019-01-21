@@ -2,7 +2,14 @@
     display: flex;
     max-width: 300px;
     border: solid thin orange;
-    margin: 10px;
+    margin: 10px auto auto auto;
+    background-color: rgba(10,10,10,0.5);
+}
+.info{
+    display: flex;
+    flex-direction: column
+
+
 }
 
 .username,.blevel,.platform{

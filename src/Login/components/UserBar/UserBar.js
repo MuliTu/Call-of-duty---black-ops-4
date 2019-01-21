@@ -7,7 +7,7 @@ const UserBar = ({user}) => {
     return (
         <div className='bar'>
             <PrestigeImage size={82} prestige={user.prestige}/>
-            <div style={{display: 'flex'}}>
+            <div className='info'>
                 <div className='username'>{user.username}</div>
                 <div className='blevel'>Level:{user.level}</div>
                 <div><PlatformImage size={25} type={user.platform}/></div>
