@@ -12,7 +12,7 @@ class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <div>
+                <div >
                     <Route exact path='/' render={(props) => <StatefulLogin {...props}/>}/>
                     <Route path='/user/:id/platform/:platform/mode/:mode/' render={(props) => <Top {...props}/>}/>
                     <Route path='/user/:id/platform/:platform/:mode/multiplayer' render={(props) => <StatefulMultiplayer {...props} />}/>

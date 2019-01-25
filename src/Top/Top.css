@@ -6,4 +6,16 @@
     margin-right: 1px;
     margin-bottom: -10px;
     border-bottom: none;
+    background-color: #b47300;
+}
+
+.section:hover {
+    padding: 11px;
+    width: auto;
+    border: solid thin;
+    border-radius: 10px 10px 0 0;
+    margin-right: 1px;
+    margin-bottom: -10px;
+    border-bottom: none;
+    background-color: rgba(226, 147, 0, 0.98);
 }

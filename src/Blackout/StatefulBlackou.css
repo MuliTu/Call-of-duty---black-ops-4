@@ -1,8 +1,24 @@
-.travel-list{
+.blackout {
+    display: flex;
+    justify-content: space-around;
+    border: solid thin orange;
+    background:  url("/images/blackout/background.png") no-repeat center;
+    background-size: contain;
+}
+
+.travel-list-item {
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     border: solid thin orange;
     border-radius: 32px;
     width: 400px;
     line-height: 52px;
     height: 52px;
+}
+
+.travel-list-title, .travel-list-icon, .travel-list-data {
+    flex-basis: 33%;
+    font-size: 0.95vw;
+    text-align: center;
+
 }

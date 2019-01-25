@@ -1,21 +1,20 @@
-.bar{
+.bar {
     display: flex;
     max-width: 300px;
     border: solid thin orange;
     margin: 10px auto auto auto;
-    background-color: rgba(10,10,10,0.5);
+    background-color: rgba(10, 10, 10, 0.5);
 }
-.info{
+
+.info {
     display: flex;
     flex-direction: column
-
-
 }
 
-.username,.blevel,.platform{
+.username, .blevel, .platform {
     margin: auto 2px auto auto;
 }
 
-.blevel{
+.blevel {
     font-size: 14px;
 }

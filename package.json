@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "chart.js": "^2.7.3",
     "react": "^16.7.0",
+    "react-chartjs-2": "^2.7.4",
     "react-d3-speedometer": "^0.4.2",
     "react-dom": "^16.7.0",
     "react-progressbar": "^15.4.1",

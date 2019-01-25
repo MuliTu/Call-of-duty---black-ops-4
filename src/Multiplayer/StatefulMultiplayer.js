@@ -4,20 +4,22 @@ import {Multiplayer} from "./components/Multiplayer/Multiplayer";
 import LifeTime from "../LifeTime/LifeTime";
 import './StatefulMultiplayer.css'
 import Select from 'react-select';
-import GlitchEffect from "../GlitchEffect/GlitchEffect";
+import BarGraph from "../Bar/BarGraph";
 
 class StatefulMultiplayer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: props.match.params.id,
-            platform: props.match.params.platform,
-            lifeTime: {
+            profile: {
+                username: props.match.params.id,
+                platform: props.match.params.platform,
                 prestige: 0,
                 level: 0,
                 levelXpRemainder: 0,
                 levelXpGained: 0,
-                timePlayedTotal: 0,
+                timePlayedTotal: 0
+            },
+            lifeTime: {
                 accuracy: 0,
                 hits: 0,
                 headshots: 0,
@@ -27,36 +29,40 @@ class StatefulMultiplayer extends React.Component {
             },
             modes: [],
             modeStatistics: [],
-            width: (window.innerWidth >= 1000 ? 500 : 350)
+            width: (window.innerWidth >= 1000 ? 400 : 350),
         }
     }
 
     resizeHandler = () => this.setState({width: (window.innerWidth >= 1000 ? 500 : 350)});
 
-
     async componentDidMount() {
-        const {data} = await UserData(this.state.username, this.state.platform);
+        const {data} = await UserData(this.state.profile.username, this.state.profile.platform);
+        const profile = await data.mp;
+        const lifeTime = await data.mp.lifetime.all;
         this.setState({
-            lifeTime: {
-                prestige: data.mp.prestige,
-                level: data.mp.level,
-                levelXpGained: data.mp.levelXpGained,
-                levelXpRemainder: data.mp.levelXpRemainder,
-                timePlayedTotal: data.mp.lifetime.all.timePlayedTotal,
-                accuracy: data.mp.lifetime.all.accuracy,
-                hits: data.mp.lifetime.all.hits,
-                headshots: data.mp.lifetime.all.headshots,
-                suicides: data.mp.lifetime.all.suicides
+            profile: {
+                username: this.props.match.params.id,
+                platform: this.props.match.params.platform,
+                prestige: profile.prestige,
+                level: profile.level,
+                levelXpGained: profile.levelXpGained,
+                levelXpRemainder: profile.levelXpRemainder,
             },
-            modes: Object.keys(data.mp.lifetime.mode).map((mode, index) => ({label: mode, value: index}))
+            lifeTime: {
+                timePlayedTotal: lifeTime.timePlayedTotal,
+                accuracy: lifeTime.accuracy,
+                hits: lifeTime.hits,
+                headshots: lifeTime.headshots,
+                suicides: lifeTime.suicides
+            },
+            modes: Object.keys(data.mp.lifetime.mode).map((mode, index) => ({label: mode, value: index})),
         });
         window.addEventListener('resize', this.resizeHandler)
     }
 
-
     changeModeHandler = async (opt) => {
-        if (opt.label !== '') {
-            const {data} = await UserData(this.state.username, this.state.platform);
+        if (opt.label) {
+            const {data} = await UserData(this.state.profile.username, this.state.profile.platform);
             this.setState({
                 modeStatistics: await data.mp.lifetime.mode[opt.label]
             })
@@ -64,32 +70,34 @@ class StatefulMultiplayer extends React.Component {
     };
 
     render() {
-        const {
-            prestige, level, levelXpGained,
-            levelXpRemainder, timePlayedTotal, accuracy, hits,
-            headshots, suicides
-        } = this.state.lifeTime;
-        const { modes, modeStatistics} = this.state;
+        const {lifeTime} = this.state;
+        const {profile} = this.state;
+        const {modes, modeStatistics,width} = this.state;
         return (
             <div>
                 <div className='test'>
-                        <div style={{width: this.state.width, margin: 'auto'}}><LifeTime level={level}
-                                                                                         levelXpGained={levelXpGained}
-                                                                                         levelXpRemainder={levelXpRemainder}
-                                                                                         prestige={prestige}
-                                                                                         timePlayedTotal={timePlayedTotal}
-                                                                                         accuracy={accuracy}
-                                                                                         headshots={headshots}
-                                                                                         hits={hits}
-                                                                                         suicides={suicides}/></div>
-                        <div style={{flexBasis: '10%'}}/>
-                        <div style={{width: this.state.width, margin: 'auto'}}>
-                            Mode:<Select options={modes}
-                                         placeholder={'Select mode'}
-                                         onChange={this.changeModeHandler}/>
-                            <Multiplayer data={modeStatistics}/>
-                        </div>
+                    <div style={{width:width, margin: 'auto'}}>
+                        <LifeTime profile={profile} data={lifeTime}/>
                     </div>
+                    <div style={{width:'502px', margin: 'auto',overflowX:'scroll'}}>
+                        <BarGraph/>
+
+                    </div>
+
+                    <div style={{width:width, margin: 'auto'}}>
+                        Mode:
+                        <Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler} isSearchable={false}/>
+                        {
+                            modeStatistics.length === 0?
+                                <div>Please Select Mode</div>
+                                :
+                                <Multiplayer data={modeStatistics}/>
+                        }
+
+                    </div>
+
+                </div>
+
             </div>
         );
     }

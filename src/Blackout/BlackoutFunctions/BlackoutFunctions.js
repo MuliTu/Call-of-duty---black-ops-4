@@ -7,7 +7,5 @@ export const BlackoutLevelImage = ({level}) => {
         height: `100px`,
         backgroundSize:'100% 100%'
     };
-    return (<div style={style}>
-
-    </div>)
-}
+    return (<div style={style}/>)
+};

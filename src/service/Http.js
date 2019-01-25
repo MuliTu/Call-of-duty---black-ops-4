@@ -23,3 +23,10 @@ export async function UserDataBlackout(name, platform) {
     return await result.json()
 
 }
+
+export async function UserMatchesMultiplayer(name,platform) {
+    const result = await fetch(`${URL}${platform}/gamer/${name}/matches/mp/start/0/end/0/details`);
+    return await result.json()
+
+
+}
