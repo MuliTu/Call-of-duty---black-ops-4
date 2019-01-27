@@ -29,11 +29,12 @@ class StatefulMultiplayer extends React.Component {
             },
             modes: [],
             modeStatistics: [],
-            width: (window.innerWidth >= 1000 ? 400 : 350),
+            width: (window.innerWidth >= 1000 ? 700 : 350),
+            currentMode: ''
         }
     }
 
-    resizeHandler = () => this.setState({width: (window.innerWidth >= 1000 ? 500 : 350)});
+    resizeHandler = () => this.setState({width: (window.innerWidth >= 1000 ? 700 : 350)});
 
     async componentDidMount() {
         const {data} = await UserData(this.state.profile.username, this.state.profile.platform);
@@ -64,36 +65,40 @@ class StatefulMultiplayer extends React.Component {
         if (opt.label) {
             const {data} = await UserData(this.state.profile.username, this.state.profile.platform);
             this.setState({
-                modeStatistics: await data.mp.lifetime.mode[opt.label]
+                modeStatistics: await data.mp.lifetime.mode[opt.label],
+                currentMode: opt.label
             })
         }
     };
 
     render() {
         const {lifeTime} = this.state;
-        const {profile} = this.state;
-        const {modes, modeStatistics,width} = this.state;
+        const {profile, currentMode, modes, modeStatistics, width} = this.state;
         return (
             <div>
-                <div className='test'>
-                    <div style={{width:width, margin: 'auto'}}>
-                        <LifeTime profile={profile} data={lifeTime}/>
+                <div className='multiplayer-wrapper'>
+                    <div >
+                        <div style={{width: '350px'}}>
+                            <LifeTime profile={profile} data={lifeTime}/>
+                        </div>
                     </div>
-                    <div style={{width:'502px', margin: 'auto',overflowX:'scroll'}}>
-                        <BarGraph/>
+                    <div style={{ width: width}}>
+                        <div style={{width: width, overflowX: 'scroll'}}>
+                            <BarGraph {...this.props} multiplayerMode={currentMode} width={1000} height={300}/>
 
-                    </div>
+                        </div>
+                        <div style={{width: width}}>
+                            Mode:
+                            <Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler}
+                                    isSearchable={false}/>
+                            {
+                                modeStatistics.length === 0 ?
+                                    <div>Please Select Mode</div>
+                                    :
+                                    <Multiplayer data={modeStatistics}/>
+                            }
 
-                    <div style={{width:width, margin: 'auto'}}>
-                        Mode:
-                        <Select options={modes} placeholder={'Select mode'} onChange={this.changeModeHandler} isSearchable={false}/>
-                        {
-                            modeStatistics.length === 0?
-                                <div>Please Select Mode</div>
-                                :
-                                <Multiplayer data={modeStatistics}/>
-                        }
-
+                        </div>
                     </div>
 
                 </div>

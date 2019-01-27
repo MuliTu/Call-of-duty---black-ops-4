@@ -8,22 +8,27 @@ class BarGraph extends React.Component {
         this.state = {
             dates: [],
             ekia: [],
-            assists:[]
+            assists: [],
+            result: [],
         }
-
     }
 
     async componentWillMount() {
-        const {data} = await UserMatchesMultiplayer('formingSpoon801', 'xbl');
-        const {matches} = await data;
-        console.log(matches);
-        this.setState({
-            ekia:await matches.map(x => x.playerStats.ekia),
-            dates:await this.normalizeDate(matches.map(x => x['utcEndSeconds'])),
-            assists:await matches.map(x => x.playerStats.assists)
-        })
+        this.refreshData()
 
     }
+
+    refreshData = async () => {
+        const {data} = await UserMatchesMultiplayer(this.props.match.params.id, this.props.match.params.platform);
+        const {matches} = await data;
+        const temp = await matches.filter(x => x.mode === this.props.multiplayerMode);
+        this.setState({
+            ekia: await temp.map(x => x.playerStats.ekia),
+            dates: await this.normalizeDate(temp.map(x => x['utcEndSeconds'])),
+            assists: await temp.map(x => x.playerStats.assists),
+            result: await temp.map(x => x.result)
+        })
+    };
 
     normalizeDate = (timeList) => {
         return timeList.map(x => (`${new Date(x * 1000).toLocaleDateString('en-US')} ${new Date(x * 1000).getHours()}:${new Date(x * 1000).getMinutes()}`))
@@ -34,24 +39,25 @@ class BarGraph extends React.Component {
             labels: dates,
             datasets: [
                 {
+
                     type: 'line',
                     fill: false,
-                    label: `Average`,
-                    backgroundColor: 'rgba(255, 255, 255,0.5)',
-                    borderColor: 'rgba(255, 255, 255,0.5)',
-                    data: [],
-                    steppedLine: false,
-                    lineTension: 0.6,
-                    pointRadius: 0,
+                    borderDash: [1],
+                    label: 'Asisits',
+                    backgroundColor: 'rgb(242, 38, 19)',// orange
+                    borderColor: 'rgb(242, 38, 19)',
+                    data: this.state.assists,
+                    lineTension: 0.1,
+                    pointRadius: (type === 'line' ? 3 : 1),
                     pointHitRadius: 10,
-                    borderDash: [6],
+
                 },
                 {
-                    type: type,
+                    type: 'line',
                     fill: false,
                     borderDash: [],
-                    label: 'EKIA',
-                    backgroundColor: 'rgba(255,140,0)',// orange
+                    label: `EKIA`,
+                    backgroundColor: `rgb(255,140,0)`,// orange
                     borderColor: 'rgb(255,140,0)',
                     data: data,
                     lineTension: 0.1,
@@ -59,44 +65,45 @@ class BarGraph extends React.Component {
                     pointHitRadius: 10,
 
                 },
-                {
-
-                    type: type,
-                    fill: false,
-                    borderDash: [],
-                    label: 'Asisits',
-                    backgroundColor: 'rgba(242, 38, 19, 1)',// orange
-                    borderColor: 'rgba(242, 38, 19, 1)',
-                    data: this.state.assists,
-                    lineTension: 0.1,
-                    pointRadius: (type === 'line' ? 3 : 1),
-                    pointHitRadius: 10,
-
-                },
             ],
         };
+
     };
+
+    async componentDidUpdate(prevProps) {
+        if (this.props.multiplayerMode !== prevProps.multiplayerMode) {
+            this.refreshData()
+        }
+
+    }
 
     render() {
         return (
-            <div style={{backgroundColor:'rgba(0, 0, 0, 0.2)'}}>
+            <div style={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
+                {this.state.mode}
                 {
-                    this.state.dates.length !== 0 ?
+                    this.props.multiplayerMode !== '' ?
+
                         <Bar
-                            width={500}
-                            height={400}
+                            width={this.props.width}
+                            height={this.props.height}
                             data={this.createDataForGraph('Ekia', this.state.ekia, this.state.dates, 'line')}
-                            redraw={false}
-                            options={{
-                                animation: {
-                                    duration: 5000
-                                },
-                                responsive: false,
-                                maintainAspectRatio: false
-                            }}
+                            redraw={true}
+                            options={
+                                {
+                                    tooltips: {
+                                        mode: 'nearest'
+                                    },
+                                    animation: {
+                                        duration: 5000
+                                    },
+                                    responsive: false,
+                                    maintainAspectRatio: false
+                                }}
+
                         />
                         :
-                        <div>Loadiing</div>}
+                        <div>Chose mode</div>}
             </div>
         );
     }

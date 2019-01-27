@@ -21,7 +21,8 @@ const LifeTime = ({profile, data, blackout = false}) => {
         {title: 'headshots', icon: Image('headshot.png'), data: data.headshots, style: smallBoxStyle},
         {title: 'hits', icon: Image('hit.png'), data: data.hits, style: smallBoxStyle},
         {title: 'suicides', icon: Image('suicides.png'), data: data.suicides, style: smallBoxStyle},
-    ] : [{
+    ] :
+        [{
         title: 'time played',
         icon: Image('time.png'),
         data: Time(data.timePlayedTotal),
